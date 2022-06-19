@@ -2,11 +2,24 @@ import React, { Component } from 'react';
 import {savedPosts} from "../posts.json";
 import css from "./css/Content.module.css";
 import PostItem from './PostItem';
+import loader from "./Loader";
+import Loader from './Loader';
 
 
 export class Content extends Component {
     constructor(props) {
       super(props)
+      this.state ={
+        isLoaded: false
+      }
+    }
+
+    componentDidMount() {
+      setTimeout(() => {
+        this.setState({
+          isLoaded: true,
+        })
+      }, 2000)
     }
   render() {
     return (
@@ -15,17 +28,10 @@ export class Content extends Component {
             <h1>My Photos</h1>
           </div>
           <div className={css.SearchResults}>
-            {savedPosts.map((posts) => {
-                return <div className={css.SearchItem} key={posts.title}>
-                            <p>{posts.title}</p>
-                            <p>{posts.name}</p>
-                            <img src={posts.image} alt="picture"></img>
-                            <p>{posts.description}</p>
-                        </div>
-            })
+            {
+              this.state.isLoaded ? <PostItem savedPosts={savedPosts} />
+              : <Loader />
             }
-
-            <PostItem savedPosts={savedPosts} />
           </div>
       </div>
     )
